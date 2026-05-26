@@ -245,6 +245,203 @@
     footer { text-align:center; padding:2rem 3rem 3rem; font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--muted); border-top:1px solid var(--border); line-height:1.8; }
     footer a { color:var(--blue); }
 
+    /* ── HELP BUTTON ──
+       Fixed button stacked ABOVE the hobbies button in the bottom-right corner.
+       Stack order from bottom: 💡 tips (1.75rem), 🎯 hobbies (5.5rem), ❓ help (9.25rem)
+       Red/coral border to signal "support/help" intent clearly. */
+    #help-btn {
+      position: fixed; right: 1.75rem; bottom: 9.25rem;
+      width: 54px; height: 54px; border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid rgba(255,77,106,0.6);
+      font-size: 1.4rem;
+      display: grid; place-items: center;
+      box-shadow: 0 0 20px rgba(255,77,106,0.15), 0 8px 24px rgba(0,0,0,0.35);
+      z-index: 9999; transition: transform 0.2s, box-shadow 0.2s;
+      color: var(--text);
+    }
+    #help-btn:hover { transform: scale(1.1); box-shadow: 0 0 32px rgba(255,77,106,0.35); }
+
+    /*
+      README TOOLTIP
+      Appears to the left of the help button when hovered.
+      Fetches README content from GitHub on first hover and caches it.
+      Hidden by default; .visible class fades it in.
+    */
+    #readme-tooltip {
+      position: fixed; right: 5rem; bottom: 7.5rem;
+      width: 300px; max-height: 320px;
+      background: var(--bg-card);
+      border: 1px solid rgba(255,77,106,0.3);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem 1.25rem;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+      z-index: 9998;
+      overflow-y: auto;
+      opacity: 0; pointer-events: none;
+      transform: translateX(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    #readme-tooltip.visible {
+      opacity: 1; pointer-events: auto; transform: translateX(0);
+    }
+    #readme-tooltip::-webkit-scrollbar { width: 4px; }
+    #readme-tooltip::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: 4px; }
+
+    .readme-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; font-weight: 700;
+      color: rgba(255,77,106,0.8);
+      text-transform: uppercase; letter-spacing: 0.12em;
+      margin-bottom: 0.75rem;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+
+    .readme-content {
+      font-size: 0.8rem; line-height: 1.7; color: var(--muted2);
+    }
+    .readme-content strong { color: var(--text); }
+    .readme-content h1, .readme-content h2, .readme-content h3 {
+      font-size: 0.85rem; font-weight: 600; color: var(--text);
+      margin: 0.6rem 0 0.3rem;
+    }
+    .readme-content p  { margin-bottom: 0.5rem; }
+    .readme-content ul { padding-left: 1rem; margin-bottom: 0.5rem; }
+    .readme-content li { margin-bottom: 0.2rem; }
+    .readme-content code {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      background: var(--bg-card-2); border: 1px solid var(--border);
+      padding: 1px 5px; border-radius: 4px; color: var(--blue);
+    }
+    .readme-loading { color: var(--muted); font-size: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+    .readme-spinner { width:14px; height:14px; border:2px solid var(--border-soft); border-top-color:rgba(255,77,106,0.8); border-radius:50%; animation:spin 0.7s linear infinite; flex-shrink:0; }
+
+    /* ── HELP MODAL OVERLAY ──
+       Same pattern as tips overlay — hidden by default, flex-centred when open. */
+    #help-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center;
+      padding: 1.5rem; z-index: 99999;
+    }
+    #help-overlay.open { display: flex; }
+
+    /* ── HELP MODAL BOX ── */
+    #help-modal {
+      width: 100%; max-width: 520px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-xl); overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+      animation: popIn 0.22s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    #help-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 1.4rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(255,77,106,0.07), transparent);
+    }
+
+    #help-header-title {
+      font-size: 0.68rem; font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      color: rgba(255,77,106,0.9);
+      text-transform: uppercase; letter-spacing: 0.12em;
+      display: block; margin-bottom: 3px;
+    }
+
+    #help-header-sub { font-size: 0.72rem; color: var(--muted); }
+
+    #help-close {
+      background: var(--bg-card-2); border: 1px solid var(--border);
+      color: var(--muted); font-size: 0.85rem;
+      width: 28px; height: 28px; border-radius: var(--radius-sm);
+      display: grid; place-items: center; transition: all 0.15s;
+      cursor: pointer;
+    }
+    #help-close:hover { color: var(--text); border-color: var(--border-soft); }
+
+    /* Issue type selector pills */
+    #help-body { padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
+
+    .issue-types { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    .issue-type-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      padding: 5px 14px; border-radius: 999px;
+      border: 1px solid var(--border-soft); color: var(--muted);
+      background: var(--bg-card-2); cursor: pointer;
+      transition: all 0.2s;
+    }
+    .issue-type-btn:hover   { border-color: var(--blue); color: var(--blue); }
+    .issue-type-btn.selected { border-color: var(--blue); color: var(--blue); background: var(--blue-dim); }
+
+    /* Title and description inputs */
+    .help-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 0.4rem; display: block;
+    }
+
+    .help-input, .help-textarea {
+      width: 100%; background: var(--bg-card-2);
+      border: 1px solid var(--border-soft); border-radius: var(--radius-sm);
+      color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.9rem;
+      padding: 0.75rem 1rem; transition: border-color 0.2s; resize: none;
+    }
+    .help-input:focus, .help-textarea:focus {
+      outline: none; border-color: var(--blue);
+    }
+    .help-textarea { height: 100px; line-height: 1.6; }
+
+    #help-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.4rem; border-top: 1px solid var(--border);
+      background: var(--bg-surface);
+    }
+
+    #help-note {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+      color: var(--muted); max-width: 240px; line-height: 1.5;
+    }
+
+    /* Submit button */
+    #help-submit {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      background: rgba(255,77,106,0.15); border: 1px solid rgba(255,77,106,0.5);
+      color: rgba(255,77,106,0.9); padding: 0.6rem 1.4rem;
+      border-radius: var(--radius-sm); cursor: pointer;
+      transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem;
+    }
+    #help-submit:hover:not(:disabled) { background: rgba(255,77,106,0.25); border-color: rgba(255,77,106,0.8); }
+    #help-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Success/error status message shown after submit */
+    #help-status {
+      font-size: 0.8rem; padding: 0.6rem 1rem;
+      border-radius: var(--radius-sm); display: none;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    #help-status.success { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,224,154,0.3); }
+    #help-status.error   { background: rgba(255,77,106,0.1); color: rgba(255,77,106,0.9); border: 1px solid rgba(255,77,106,0.3); }
+
+    /* ── HOBBIES FLOATING BUTTON ──
+       Fixed button sitting above the tips button in the bottom-right corner.
+       Purple border to visually distinguish it from the amber tips button. */
+    #hobbies-btn {
+      position: fixed; right: 1.75rem; bottom: 5.5rem;
+      width: 54px; height: 54px; border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--purple);
+      font-size: 1.4rem;
+      display: grid; place-items: center;
+      box-shadow: 0 0 20px rgba(167,139,250,0.2), 0 8px 24px rgba(0,0,0,0.35);
+      z-index: 9999; transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    #hobbies-btn:hover { transform: scale(1.1) rotate(8deg); box-shadow: 0 0 32px rgba(167,139,250,0.4); }
+
     /* ── FLOATING TIPS BUTTON ──
        Fixed amber button in the bottom-right corner. z-index:9999 keeps
        it above all other content. Rotates on hover for a playful feel. */
@@ -490,7 +687,99 @@
     <a href="https://github.com/noobstar2306/ai-devops-bot" target="_blank" rel="noopener">noobstar2306/ai-devops-bot</a>
     &nbsp;·&nbsp;
     <a href="https://noobstar2306.github.io/ai-devops-bot/" target="_blank" rel="noopener">pipeline dashboard</a>
+    &nbsp;·&nbsp;
+    <a href="https://noobstar2306.github.io/ai-devops-bot/hobbies.html" target="_blank" rel="noopener">hobbies</a>
   </footer>
+
+  <!--
+    HELP BUTTON
+    Fixed floating button stacked above the hobbies button (bottom-right).
+    Opens a modal where visitors can report issues or suggestions.
+    Also shows a README tooltip on hover giving a brief overview of the repo.
+  -->
+  <button id="help-btn" type="button" aria-label="Report an issue or get help" title="Help & Feedback">❓</button>
+
+  <!--
+    README TOOLTIP
+    Appears to the left of the help button on hover.
+    Content is fetched from the GitHub API on first hover and cached.
+    Parsed from Markdown to basic HTML for readability.
+  -->
+  <div id="readme-tooltip" role="tooltip" aria-hidden="true">
+    <div class="readme-label">✦ About this repo</div>
+    <div id="readme-content" class="readme-content">
+      <div class="readme-loading"><div class="readme-spinner"></div><span>Loading README...</span></div>
+    </div>
+  </div>
+
+  <!--
+    HELP MODAL
+    Lets visitors select an issue type, enter a title and description,
+    then submit — which creates a real GitHub issue via the API.
+  -->
+  <div id="help-overlay" role="dialog" aria-modal="true" aria-labelledby="help-header-title">
+    <div id="help-modal">
+
+      <!-- Modal header -->
+      <div id="help-header">
+        <div>
+          <span id="help-header-title">Report an issue</span>
+          <span id="help-header-sub">Creates a GitHub issue on this repo</span>
+        </div>
+        <button id="help-close" type="button" aria-label="Close help">✕</button>
+      </div>
+
+      <!-- Modal body: issue type, title input, description textarea -->
+      <div id="help-body">
+
+        <!-- Status message shown after submit (success or error) -->
+        <div id="help-status"></div>
+
+        <!-- Issue type selector: clicking a pill sets the label on the GitHub issue -->
+        <div>
+          <span class="help-label">Issue type</span>
+          <div class="issue-types" id="issue-types">
+            <button class="issue-type-btn selected" data-type="bug" type="button">🐛 Bug</button>
+            <button class="issue-type-btn" data-type="suggestion" type="button">💡 Suggestion</button>
+            <button class="issue-type-btn" data-type="question" type="button">❓ Question</button>
+            <button class="issue-type-btn" data-type="improvement" type="button">✨ Improvement</button>
+          </div>
+        </div>
+
+        <!-- Issue title -->
+        <div>
+          <label class="help-label" for="issue-title">Title</label>
+          <input id="issue-title" class="help-input" type="text"
+            placeholder="Short description of the issue..." maxlength="100"/>
+        </div>
+
+        <!-- Issue description -->
+        <div>
+          <label class="help-label" for="issue-body">Description</label>
+          <textarea id="issue-body" class="help-textarea"
+            placeholder="What happened? What did you expect? Any steps to reproduce?"></textarea>
+        </div>
+
+      </div>
+
+      <!-- Modal footer: info note + submit button -->
+      <div id="help-footer">
+        <span id="help-note">Issues are created publicly on GitHub. Include as much detail as possible.</span>
+        <button id="help-submit" type="button">
+          <span id="help-submit-text">Submit issue →</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!--
+    HOBBIES BUTTON
+    Fixed floating button that links to the hobbies and interests page.
+    Sits above the tips button in the bottom-right corner.
+    Uses a purple border to distinguish it from the amber tips button.
+  -->
+  <a id="hobbies-btn" href="https://noobstar2306.github.io/ai-devops-bot/hobbies.html" target="_blank" rel="noopener" aria-label="View hobbies and interests" title="Hobbies & Interests">🎯</a>
 
   <!--
     TIPS BUTTON
@@ -534,7 +823,15 @@
   // GEMINI_KEY is injected at deploy time by the GitHub Actions workflow
   // using a sed command that replaces this placeholder with the real key
   // from GitHub Secrets. The key never appears in source code.
-  const GEMINI_KEY = "PASTE_GEMINI_TIPS_KEY_HERE";
+  const GEMINI_KEY  = "PASTE_GEMINI_TIPS_KEY_HERE";
+
+  // ── GITHUB CONFIG ──
+  // GITHUB_PAT is a Personal Access Token with "repo" scope, injected at
+  // deploy time by GitHub Actions sed command from the GITHUB_PAT secret.
+  // It allows the help form to create issues on the repo via the GitHub API.
+  // Never hardcode a real PAT in source code.
+  const GITHUB_PAT  = "PASTE_GITHUB_PAT_HERE";
+  const GITHUB_REPO = "noobstar2306/ai-devops-bot";
 
   // ── TECHNICAL SKILLS DATA ──
   // Each entry renders as one skill card in the technical skills grid.
@@ -637,6 +934,201 @@
     'Container registries and image management',
     'Shift-left testing in DevOps pipelines'
   ];
+
+  // ── README TOOLTIP ──
+  // Fetches the README from the GitHub API on first hover and caches it.
+  // Converts basic Markdown to HTML for readable display in the tooltip.
+  // Uses a flag to avoid fetching multiple times.
+  let readmeLoaded = false;
+
+  // ── parseMarkdown ──
+  // Lightweight Markdown-to-HTML converter covering the most common elements:
+  // headings (h1-h3), bold, inline code, unordered list items, and paragraphs.
+  // Not a full parser — handles enough to make a README readable in a tooltip.
+  function parseMarkdown(md) {
+    return md
+      .split('\n')
+      .map(line => {
+        if (line.startsWith('### ')) return `<h3>${line.slice(4)}</h3>`;
+        if (line.startsWith('## '))  return `<h2>${line.slice(3)}</h2>`;
+        if (line.startsWith('# '))   return `<h1>${line.slice(2)}</h1>`;
+        if (line.startsWith('- ') || line.startsWith('* '))
+          return `<li>${line.slice(2)}</li>`;
+        if (line.trim() === '') return '';
+        return `<p>${line}</p>`;
+      })
+      .join('')
+      // Replace **bold** with <strong>
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      // Replace `inline code` with <code>
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      // Wrap consecutive <li> items in <ul>
+      .replace(/(<li>.*?<\/li>)+/g, match => `<ul>${match}</ul>`);
+  }
+
+  // ── fetchReadme ──
+  // Calls the GitHub Contents API to get the README.md for the repo.
+  // The response is base64-encoded, so we decode it before parsing.
+  // Result is cached in readmeLoaded flag — only fetches once per session.
+  async function fetchReadme() {
+    if (readmeLoaded) return;
+    readmeLoaded = true;
+
+    const contentEl = document.getElementById('readme-content');
+
+    try {
+      const res  = await fetch(
+        `https://api.github.com/repos/${GITHUB_REPO}/readme`,
+        { headers: { 'Accept': 'application/vnd.github+json' } }
+      );
+      const data = await res.json();
+
+      // GitHub returns README content base64-encoded
+      const raw  = atob(data.content.replace(/\n/g, ''));
+
+      // Truncate to first 1200 chars to keep tooltip compact
+      const trimmed = raw.length > 1200 ? raw.slice(0, 1200) + '\n\n...' : raw;
+
+      contentEl.innerHTML = parseMarkdown(trimmed);
+
+    } catch (err) {
+      contentEl.innerHTML = '<p>Could not load README.</p>';
+    }
+  }
+
+  // Show tooltip on hover, hide when mouse leaves the button area
+  const helpBtn     = document.getElementById('help-btn');
+  const readmeTip   = document.getElementById('readme-tooltip');
+  let   tipTimeout  = null;
+
+  helpBtn.addEventListener('mouseenter', () => {
+    clearTimeout(tipTimeout);
+    readmeTip.classList.add('visible');
+    fetchReadme(); // fetches only on first hover, cached after that
+  });
+
+  helpBtn.addEventListener('mouseleave', () => {
+    tipTimeout = setTimeout(() => {
+      if (!readmeTip.matches(':hover')) readmeTip.classList.remove('visible');
+    }, 200);
+  });
+
+  readmeTip.addEventListener('mouseenter', () => clearTimeout(tipTimeout));
+  readmeTip.addEventListener('mouseleave', () => {
+    tipTimeout = setTimeout(() => readmeTip.classList.remove('visible'), 200);
+  });
+
+  // ── openHelp / closeHelp ──
+  // Show and hide the help modal overlay.
+  function openHelp() {
+    document.getElementById('help-overlay').classList.add('open');
+    document.getElementById('help-status').style.display = 'none';
+    document.getElementById('issue-title').value = '';
+    document.getElementById('issue-body').value  = '';
+  }
+  function closeHelp() {
+    document.getElementById('help-overlay').classList.remove('open');
+  }
+
+  // ── selectIssueType ──
+  // Handles the issue type pill selector. Removes "selected" from all pills
+  // and adds it to the clicked one. The selected type is used as a GitHub label.
+  document.getElementById('issue-types').addEventListener('click', e => {
+    const btn = e.target.closest('.issue-type-btn');
+    if (!btn) return;
+    document.querySelectorAll('.issue-type-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  });
+
+  // ── submitIssue ──
+  // Reads the form values, calls the GitHub Issues API to create a new issue
+  // on the noobstar2306/ai-devops-bot repo, then shows a success or error message.
+  // The issue includes: title, body (description + page URL + timestamp),
+  // and a label matching the selected issue type.
+  async function submitIssue() {
+    const titleEl   = document.getElementById('issue-title');
+    const bodyEl    = document.getElementById('issue-body');
+    const submitBtn = document.getElementById('help-submit');
+    const submitTxt = document.getElementById('help-submit-text');
+    const statusEl  = document.getElementById('help-status');
+    const typeBtn   = document.querySelector('.issue-type-btn.selected');
+
+    // Validate title is not empty
+    if (!titleEl.value.trim()) {
+      titleEl.focus();
+      titleEl.style.borderColor = 'rgba(255,77,106,0.8)';
+      setTimeout(() => titleEl.style.borderColor = '', 2000);
+      return;
+    }
+
+    const issueType = typeBtn?.dataset.type || 'bug';
+    const issueTitle = `[${issueType}] ${titleEl.value.trim()}`;
+    const issueBody  = `${bodyEl.value.trim() || '_No description provided._'}
+
+---
+**Source:** ${window.location.href}
+**Submitted:** ${new Date().toUTCString()}`;
+
+    // Show loading state on the submit button
+    submitBtn.disabled  = true;
+    submitTxt.textContent = '⏳ Submitting...';
+    statusEl.style.display = 'none';
+
+    try {
+      // POST to GitHub Issues API to create the issue
+      const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/issues`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${GITHUB_PAT}`,
+          'Accept':        'application/vnd.github+json',
+          'Content-Type':  'application/json'
+        },
+        body: JSON.stringify({
+          title:  issueTitle,
+          body:   issueBody,
+          labels: [issueType]
+        })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // Show success message with a link to the created issue
+        statusEl.className     = 'success';
+        statusEl.style.display = 'block';
+        statusEl.innerHTML     = `✅ Issue created! <a href="${data.html_url}" target="_blank" rel="noopener" style="color:var(--green);text-decoration:underline;">View #${data.number} on GitHub →</a>`;
+        titleEl.value = '';
+        bodyEl.value  = '';
+      } else {
+        throw new Error(data.message || 'GitHub API error');
+      }
+
+    } catch (err) {
+      // Show error message if the API call fails
+      statusEl.className     = 'error';
+      statusEl.style.display = 'block';
+      statusEl.textContent   = `❌ Failed to create issue: ${err.message}`;
+    } finally {
+      // Re-enable the submit button regardless of outcome
+      submitBtn.disabled    = false;
+      submitTxt.textContent = 'Submit issue →';
+    }
+  }
+
+  // ── Help modal event listeners ──
+  document.getElementById('help-btn').addEventListener('click', openHelp);
+  document.getElementById('help-close').addEventListener('click', closeHelp);
+  document.getElementById('help-submit').addEventListener('click', submitIssue);
+
+  // Close when clicking the dark backdrop outside the modal
+  document.getElementById('help-overlay').addEventListener('click', e => {
+    if (e.target.id === 'help-overlay') closeHelp();
+  });
+
+  // Also close help modal on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeHelp(); closeTips(); }
+  });
 
   // ── renderTechSkills ──
   // Reads TECH_SKILLS and injects one <article> card per entry into
@@ -761,8 +1253,7 @@ No bullet points. No preamble. Just the tip directly.`
     if (e.target.id === 'tips-overlay') closeTips();
   });
 
-  // Close on Escape key for keyboard accessibility
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTips(); });
+  // Close on Escape key handled above (closes both help and tips modals)
 
   // ── Scroll reveal observer ──
   // Watches .reveal elements and adds the "visible" class when they enter
