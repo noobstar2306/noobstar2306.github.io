@@ -6,13 +6,22 @@
   <meta name="description" content="Ganesh Putran — DevOps Engineer building AI-powered CI/CD pipelines, automation, and observability tools."/>
   <title>Ganesh Putran — DevOps Engineer</title>
 
-  <!-- Google Fonts: JetBrains Mono for code elements, Outfit for body text -->
+  <!--
+    FONTS
+    JetBrains Mono — code-like elements: labels, badges, monospace text.
+    Outfit         — body text, headings, general UI copy.
+    Preconnect hints tell the browser to resolve these origins early,
+    reducing the time to first font render.
+  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* ── DESIGN TOKENS: central colour/spacing variables used throughout ── */
+    /* ── DESIGN TOKENS ──
+       All colours and spacing values are CSS custom properties so they can
+       be changed in one place and propagate everywhere automatically.
+       "-dim" suffix = semi-transparent version used for backgrounds/glows. */
     :root {
       --bg:          #05080d;
       --bg-surface:  #0a0f1a;
@@ -38,13 +47,13 @@
 
     /* ── RESET: normalise browser defaults ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html  { scroll-behavior: smooth; }
-    img   { max-width: 100%; display: block; }
-    a     { text-decoration: none; color: inherit; }
+    html   { scroll-behavior: smooth; }
+    img    { max-width: 100%; display: block; }
+    a      { text-decoration: none; color: inherit; }
     button { border: none; background: none; cursor: pointer; font: inherit; }
-    ul    { list-style: none; }
+    ul     { list-style: none; }
 
-    /* ── BASE BODY: dark gradient + subtle grid overlay ── */
+    /* ── BASE BODY ── */
     body {
       font-family: 'Outfit', sans-serif;
       color: var(--text);
@@ -53,28 +62,25 @@
       overflow-x: hidden;
     }
 
-    /* Subtle dot-grid background for depth */
+    /* Subtle dot-grid overlay — pointer-events:none so it never blocks clicks */
     body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image:
-        radial-gradient(circle, rgba(79,163,255,0.06) 1px, transparent 1px);
+      content: ''; position: fixed; inset: 0;
+      background-image: radial-gradient(circle, rgba(79,163,255,0.06) 1px, transparent 1px);
       background-size: 28px 28px;
       pointer-events: none; z-index: 0;
     }
 
-    /* Ambient glow blobs */
+    /* Two ambient glow blobs: blue top-left, green bottom-right */
     .glow-tl, .glow-br {
       position: fixed; border-radius: 50%;
       filter: blur(100px); pointer-events: none; z-index: 0;
     }
-    .glow-tl { width: 500px; height: 500px; top: -150px; left: -150px; background: radial-gradient(circle, rgba(79,163,255,0.07), transparent 70%); }
-    .glow-br { width: 500px; height: 500px; bottom: -150px; right: -150px; background: radial-gradient(circle, rgba(0,224,154,0.06), transparent 70%); }
+    .glow-tl { width:500px; height:500px; top:-150px; left:-150px; background:radial-gradient(circle,rgba(79,163,255,0.07),transparent 70%); }
+    .glow-br { width:500px; height:500px; bottom:-150px; right:-150px; background:radial-gradient(circle,rgba(0,224,154,0.06),transparent 70%); }
 
-    /* ── LAYOUT WRAPPER ── */
     .page { position: relative; z-index: 1; }
 
-    /* ── STICKY NAVIGATION BAR ── */
+    /* ── NAVIGATION: sticky top bar that stays visible while scrolling ── */
     .site-nav {
       position: sticky; top: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
@@ -83,426 +89,244 @@
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
-
-    .site-brand {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem; letter-spacing: 0.12em;
-      color: var(--green); text-transform: uppercase;
-    }
-
-    .site-menu { display: flex; gap: 2rem; }
-    .site-menu a {
-      font-size: 0.85rem; color: var(--muted);
-      letter-spacing: 0.03em; transition: color 0.2s;
-    }
-    .site-menu a:hover { color: var(--text); }
+    .site-brand { font-family:'JetBrains Mono',monospace; font-size:0.9rem; letter-spacing:0.12em; color:var(--green); text-transform:uppercase; }
+    .site-menu  { display:flex; gap:2rem; }
+    .site-menu a { font-size:0.85rem; color:var(--muted); letter-spacing:0.03em; transition:color 0.2s; }
+    .site-menu a:hover { color:var(--text); }
 
     /* ── SECTION BASE ── */
-    .section { padding: 6rem 3rem; position: relative; }
-    .section + .section { border-top: 1px solid var(--border); }
-
+    .section { padding:6rem 3rem; position:relative; }
+    .section + .section { border-top:1px solid var(--border); }
     .section-label {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem; letter-spacing: 0.22em;
-      color: var(--blue); text-transform: uppercase;
-      margin-bottom: 0.85rem;
+      display:inline-flex; align-items:center; gap:0.5rem;
+      font-family:'JetBrains Mono',monospace; font-size:0.68rem;
+      letter-spacing:0.22em; color:var(--blue); text-transform:uppercase; margin-bottom:0.85rem;
     }
-    .section-label::before { content: '//'; opacity: 0.5; }
-
-    .section-title {
-      font-size: clamp(2rem, 4vw, 2.8rem);
-      font-weight: 800; line-height: 1.05;
-      letter-spacing: -0.03em; margin-bottom: 2rem;
-    }
+    .section-label::before { content:'//'; opacity:0.5; }
+    .section-title { font-size:clamp(2rem,4vw,2.8rem); font-weight:800; line-height:1.05; letter-spacing:-0.03em; margin-bottom:2rem; }
 
     /* ── BUTTONS ── */
     .btn {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.85rem 1.75rem; border-radius: 999px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem; letter-spacing: 0.06em;
-      transition: all 0.2s; font-weight: 500;
+      display:inline-flex; align-items:center; gap:0.5rem;
+      padding:0.85rem 1.75rem; border-radius:999px;
+      font-family:'JetBrains Mono',monospace; font-size:0.78rem;
+      letter-spacing:0.06em; transition:all 0.2s; font-weight:500;
     }
+    .btn-primary  { background:var(--green); color:#020a06; font-weight:700; box-shadow:0 12px 32px rgba(0,224,154,0.18); }
+    .btn-primary:hover  { transform:translateY(-2px); background:#00c988; box-shadow:0 16px 40px rgba(0,224,154,0.28); }
+    .btn-secondary { border:1px solid var(--border-soft); color:var(--text); }
+    .btn-secondary:hover { border-color:var(--blue); color:var(--blue); transform:translateY(-2px); }
 
-    .btn-primary {
-      background: var(--green); color: #020a06; font-weight: 700;
-      box-shadow: 0 12px 32px rgba(0,224,154,0.18);
-    }
-    .btn-primary:hover { transform: translateY(-2px); background: #00c988; box-shadow: 0 16px 40px rgba(0,224,154,0.28); }
-
-    .btn-secondary {
-      border: 1px solid var(--border-soft); color: var(--text);
-    }
-    .btn-secondary:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
-
-    /* ── HERO SECTION ── */
-    #hero {
-      min-height: calc(100vh - 4rem);
-      display: flex; align-items: center;
-      padding-top: 6rem;
-    }
-
-    .hero-inner { max-width: 760px; }
-
+    /* ── HERO ── */
+    #hero { min-height:calc(100vh - 4rem); display:flex; align-items:center; padding-top:6rem; }
+    .hero-inner { max-width:760px; }
     .hero-tag {
-      display: inline-flex; align-items: center; gap: 0.75rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem; color: var(--green);
-      letter-spacing: 0.18em; text-transform: uppercase;
-      margin-bottom: 1.5rem;
+      display:inline-flex; align-items:center; gap:0.75rem;
+      font-family:'JetBrains Mono',monospace; font-size:0.72rem;
+      color:var(--green); letter-spacing:0.18em; text-transform:uppercase; margin-bottom:1.5rem;
     }
-    .hero-tag::before { content: ''; width: 2rem; height: 1px; background: var(--green); }
+    .hero-tag::before { content:''; width:2rem; height:1px; background:var(--green); }
+    .hero-title { font-size:clamp(3.2rem,7vw,5.5rem); line-height:0.95; letter-spacing:-0.04em; margin-bottom:1rem; font-weight:800; }
+    .hero-title .accent { color:var(--green); }
+    .hero-role  { font-family:'JetBrains Mono',monospace; font-size:clamp(0.9rem,1.5vw,1.1rem); color:var(--muted); margin-bottom:1.5rem; }
+    .hero-desc  { font-size:1.05rem; color:var(--muted2); line-height:1.8; max-width:540px; margin-bottom:2.5rem; font-weight:300; }
+    .hero-actions { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:3.5rem; }
+    .hero-stats { display:flex; gap:2.5rem; flex-wrap:wrap; padding-top:2rem; border-top:1px solid var(--border); }
+    .hero-stat .num { font-size:2.25rem; font-weight:800; color:var(--blue); letter-spacing:-0.03em; font-family:'JetBrains Mono',monospace; }
+    .hero-stat .lbl { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; margin-top:3px; }
 
-    .hero-title {
-      font-size: clamp(3.2rem, 7vw, 5.5rem);
-      line-height: 0.95; letter-spacing: -0.04em;
-      margin-bottom: 1rem; font-weight: 800;
-    }
-    .hero-title .accent { color: var(--green); }
-
-    .hero-role {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-      color: var(--muted); margin-bottom: 1.5rem;
-    }
-
-    .hero-desc {
-      font-size: 1.05rem; color: var(--muted2);
-      line-height: 1.8; max-width: 540px; margin-bottom: 2.5rem;
-      font-weight: 300;
-    }
-
-    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3.5rem; }
-
-    /* Stats row under hero CTA */
-    .hero-stats {
-      display: flex; gap: 2.5rem; flex-wrap: wrap;
-      padding-top: 2rem; border-top: 1px solid var(--border);
-    }
-
-    .hero-stat .num {
-      font-size: 2.25rem; font-weight: 800;
-      color: var(--blue); letter-spacing: -0.03em;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .hero-stat .lbl {
-      font-size: 0.72rem; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3px;
-    }
-
-    /* ── SKILLS GRID ── */
+    /* ── TECHNICAL SKILLS GRID ──
+       Cards are injected here by renderTechSkills(). Adding a new skill
+       only requires adding one object to the TECH_SKILLS array in JS. */
     .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.25rem;
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.25rem;
     }
-
     .skill-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.6rem;
-      transition: transform 0.3s, border-color 0.3s;
-      position: relative; overflow: hidden;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-lg); padding:1.6rem;
+      transition:transform 0.3s, border-color 0.3s;
+      position:relative; overflow:hidden;
     }
-
-    /* Top accent line on skill cards */
+    /* Coloured top accent line that appears on hover */
     .skill-card::after {
-      content: ''; position: absolute;
-      top: 0; left: 0; right: 0; height: 1px;
-      opacity: 0; transition: opacity 0.3s;
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      opacity:0; transition:opacity 0.3s;
     }
-    .skill-card.c-green::after { background: linear-gradient(90deg, var(--green), transparent); }
-    .skill-card.c-blue::after  { background: linear-gradient(90deg, var(--blue), transparent); }
-    .skill-card.c-purple::after{ background: linear-gradient(90deg, var(--purple), transparent); }
-    .skill-card.c-amber::after { background: linear-gradient(90deg, var(--amber), transparent); }
-
-    .skill-card:hover { transform: translateY(-4px); border-color: var(--border-soft); }
-    .skill-card:hover::after { opacity: 1; }
-
-    .skill-icon { font-size: 1.6rem; margin-bottom: 0.9rem; }
-    .skill-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .skill-card p  { font-size: 0.875rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
-
-    .tag-group { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .skill-card.c-green::after  { background:linear-gradient(90deg,var(--green),transparent); }
+    .skill-card.c-blue::after   { background:linear-gradient(90deg,var(--blue),transparent); }
+    .skill-card.c-purple::after { background:linear-gradient(90deg,var(--purple),transparent); }
+    .skill-card.c-amber::after  { background:linear-gradient(90deg,var(--amber),transparent); }
+    .skill-card:hover { transform:translateY(-4px); border-color:var(--border-soft); }
+    .skill-card:hover::after { opacity:1; }
+    .skill-icon  { font-size:1.6rem; margin-bottom:0.9rem; }
+    .skill-card h3 { font-size:1rem; font-weight:600; margin-bottom:0.5rem; }
+    .skill-card p  { font-size:0.875rem; color:var(--muted); line-height:1.7; margin-bottom:1rem; }
+    .tag-group { display:flex; flex-wrap:wrap; gap:0.4rem; }
     .tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem; padding: 3px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border-soft);
-      color: var(--muted);
+      font-family:'JetBrains Mono',monospace; font-size:0.65rem;
+      padding:3px 10px; border-radius:999px;
+      background:rgba(255,255,255,0.04); border:1px solid var(--border-soft); color:var(--muted);
     }
+
+    /* ── SOFT SKILLS GRID ──
+       Simpler cards below the technical grid showing personal working traits.
+       Cards are injected by renderSoftSkills() — edit SOFT_SKILLS in JS to update. */
+    .soft-skills-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem;
+      margin-top:2.5rem;
+    }
+    .soft-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-md); padding:1.25rem;
+      display:flex; align-items:flex-start; gap:0.85rem;
+      transition:border-color 0.2s, transform 0.2s;
+    }
+    .soft-card:hover { border-color:var(--border-soft); transform:translateY(-3px); }
+    .soft-card-icon {
+      font-size:1.3rem; flex-shrink:0;
+      width:38px; height:38px;
+      background:var(--bg-card-2); border:1px solid var(--border);
+      border-radius:var(--radius-sm);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .soft-card h4 { font-size:0.9rem; font-weight:600; margin-bottom:0.3rem; }
+    .soft-card p  { font-size:0.8rem; color:var(--muted); line-height:1.6; }
+    .soft-section-label {
+      font-family:'JetBrains Mono',monospace; font-size:0.65rem;
+      letter-spacing:0.18em; color:var(--purple);
+      text-transform:uppercase; margin-bottom:0.75rem;
+      display:inline-flex; align-items:center; gap:0.4rem;
+    }
+    .soft-section-label::before { content:'//'; opacity:0.5; }
 
     /* ── PROJECT CARD ── */
-    .project-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      overflow: hidden;
-      display: grid; grid-template-columns: 1fr 1fr;
-    }
-
-    .project-info { padding: 2.75rem; }
-
+    .project-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-xl); overflow:hidden; display:grid; grid-template-columns:1fr 1fr; }
+    .project-info { padding:2.75rem; }
     .project-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem; font-weight: 700;
-      color: var(--green);
-      background: var(--green-dim);
-      border: 1px solid rgba(0,224,154,0.2);
-      border-radius: 999px; padding: 0.5rem 1rem;
-      margin-bottom: 1.5rem;
+      display:inline-flex; align-items:center; gap:0.5rem;
+      font-family:'JetBrains Mono',monospace; font-size:0.68rem; font-weight:700;
+      color:var(--green); background:var(--green-dim); border:1px solid rgba(0,224,154,0.2);
+      border-radius:999px; padding:0.5rem 1rem; margin-bottom:1.5rem;
     }
-
-    /* Animated pulse dot on project badge */
-    .project-badge::before {
-      content: ''; width: 6px; height: 6px;
-      background: var(--green); border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
+    .project-badge::before { content:''; width:6px; height:6px; background:var(--green); border-radius:50%; animation:pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
+    .project-info h3 { font-size:1.7rem; font-weight:800; line-height:1.1; margin-bottom:1rem; letter-spacing:-0.02em; }
+    .project-info > p { color:var(--muted); line-height:1.8; margin-bottom:1.75rem; font-size:0.925rem; }
+    .project-stages { display:grid; gap:0.65rem; margin-bottom:2rem; }
+    .stage-row { display:flex; align-items:center; gap:0.75rem; font-size:0.9rem; }
+    .stage-dot { width:7px; height:7px; border-radius:50%; background:var(--green); flex-shrink:0; }
+    .project-links { display:flex; gap:1rem; flex-wrap:wrap; }
+    .project-visual { background:var(--bg-surface); border-left:1px solid var(--border); padding:2rem; display:flex; flex-direction:column; gap:1.1rem; }
+    .mini-pipeline { background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-md); padding:1.1rem; font-family:'JetBrains Mono',monospace; font-size:0.72rem; }
+    .pipeline-title { color:var(--muted); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:0.8rem; font-size:0.64rem; }
+    .pipeline-step { display:flex; align-items:center; gap:0.55rem; padding:0.4rem 0; border-bottom:1px solid var(--border); color:var(--text); }
+    .pipeline-step:last-child { border-bottom:none; }
+    .step-time { margin-left:auto; color:var(--muted); }
+    .mini-comment { background:var(--blue-dim); border:1px solid rgba(79,163,255,0.15); border-radius:var(--radius-md); padding:1.1rem; font-size:0.875rem; color:var(--muted2); line-height:1.7; }
+    .comment-header { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.6rem; color:var(--blue); font-family:'JetBrains Mono',monospace; font-size:0.68rem; }
 
-    .project-info h3 {
-      font-size: 1.7rem; font-weight: 800;
-      line-height: 1.1; margin-bottom: 1rem;
-      letter-spacing: -0.02em;
-    }
+    /* ── TIMELINE ── */
+    .timeline { display:grid; gap:1rem; max-width:700px; }
+    .timeline-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.75rem; display:grid; gap:0.6rem; transition:border-color 0.2s; }
+    .timeline-card:hover { border-color:var(--border-soft); }
+    .timeline-meta  { font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--green); letter-spacing:0.1em; }
+    .timeline-title { font-size:1rem; font-weight:700; }
+    .timeline-desc  { font-size:0.9rem; color:var(--muted); line-height:1.75; }
 
-    .project-info > p {
-      color: var(--muted); line-height: 1.8;
-      margin-bottom: 1.75rem; font-size: 0.925rem;
-    }
-
-    .project-stages { display: grid; gap: 0.65rem; margin-bottom: 2rem; }
-    .stage-row { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; }
-    .stage-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-
-    .project-links { display: flex; gap: 1rem; flex-wrap: wrap; }
-
-    .project-visual {
-      background: var(--bg-surface);
-      border-left: 1px solid var(--border);
-      padding: 2rem; display: flex; flex-direction: column; gap: 1.1rem;
-    }
-
-    .mini-pipeline {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 1.1rem;
-      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
-    }
-    .pipeline-title {
-      color: var(--muted); text-transform: uppercase;
-      letter-spacing: 0.12em; margin-bottom: 0.8rem; font-size: 0.64rem;
-    }
-    .pipeline-step {
-      display: flex; align-items: center; gap: 0.55rem;
-      padding: 0.4rem 0; border-bottom: 1px solid var(--border); color: var(--text);
-    }
-    .pipeline-step:last-child { border-bottom: none; }
-    .step-time { margin-left: auto; color: var(--muted); }
-
-    .mini-comment {
-      background: var(--blue-dim);
-      border: 1px solid rgba(79,163,255,0.15);
-      border-radius: var(--radius-md); padding: 1.1rem;
-      font-size: 0.875rem; color: var(--muted2); line-height: 1.7;
-    }
-    .comment-header {
-      display: flex; align-items: center; gap: 0.5rem;
-      margin-bottom: 0.6rem; color: var(--blue);
-      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
-    }
-
-    /* ── TIMELINE / JOURNEY ── */
-    .timeline { display: grid; gap: 1rem; max-width: 700px; }
-
-    .timeline-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 1.75rem;
-      display: grid; gap: 0.6rem;
-      transition: border-color 0.2s;
-    }
-    .timeline-card:hover { border-color: var(--border-soft); }
-
-    .timeline-meta {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem; color: var(--green);
-      letter-spacing: 0.1em;
-    }
-    .timeline-title { font-size: 1rem; font-weight: 700; }
-    .timeline-desc  { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
-
-    /* ── CONTACT SECTION ── */
-    .contact-card {
-      max-width: 640px; margin: 0 auto;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl); padding: 3rem;
-      text-align: center;
-    }
-
-    .contact-card h2 { font-size: 2rem; font-weight: 800; margin-bottom: 0.85rem; }
-    .contact-card p  { color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
-
-    .contact-links {
-      display: flex; justify-content: center;
-      gap: 1rem; flex-wrap: wrap;
-    }
-
-    .contact-link {
-      display: flex; align-items: center; gap: 0.7rem;
-      padding: 0.9rem 1.4rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      background: var(--bg-card-2);
-      font-size: 0.9rem; transition: all 0.2s;
-    }
-    .contact-link:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
+    /* ── CONTACT ── */
+    .contact-card { max-width:640px; margin:0 auto; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-xl); padding:3rem; text-align:center; }
+    .contact-card h2 { font-size:2rem; font-weight:800; margin-bottom:0.85rem; }
+    .contact-card p  { color:var(--muted); line-height:1.8; margin-bottom:2rem; }
+    .contact-links { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; }
+    .contact-link { display:flex; align-items:center; gap:0.7rem; padding:0.9rem 1.4rem; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--bg-card-2); font-size:0.9rem; transition:all 0.2s; }
+    .contact-link:hover { border-color:var(--blue); color:var(--blue); transform:translateY(-2px); }
 
     /* ── FOOTER ── */
-    footer {
-      text-align: center; padding: 2rem 3rem 3rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem; color: var(--muted);
-      border-top: 1px solid var(--border); line-height: 1.8;
-    }
-    footer a { color: var(--blue); }
+    footer { text-align:center; padding:2rem 3rem 3rem; font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--muted); border-top:1px solid var(--border); line-height:1.8; }
+    footer a { color:var(--blue); }
 
-    /* ── FLOATING TIPS BUTTON ── */
+    /* ── FLOATING TIPS BUTTON ──
+       Fixed amber button in the bottom-right corner. z-index:9999 keeps
+       it above all other content. Rotates on hover for a playful feel. */
     #tips-btn {
-      position: fixed; right: 1.75rem; bottom: 1.75rem;
-      width: 54px; height: 54px; border-radius: 50%;
-      background: var(--bg-card);
-      border: 1px solid var(--amber);
-      font-size: 1.4rem;
-      display: grid; place-items: center;
-      box-shadow: 0 0 20px rgba(255,181,71,0.2), 0 8px 24px rgba(0,0,0,0.35);
-      z-index: 9999; transition: transform 0.2s, box-shadow 0.2s;
+      position:fixed; right:1.75rem; bottom:1.75rem;
+      width:54px; height:54px; border-radius:50%;
+      background:var(--bg-card); border:1px solid var(--amber);
+      font-size:1.4rem; display:grid; place-items:center;
+      box-shadow:0 0 20px rgba(255,181,71,0.2), 0 8px 24px rgba(0,0,0,0.35);
+      z-index:9999; transition:transform 0.2s, box-shadow 0.2s;
     }
-    #tips-btn:hover { transform: scale(1.1) rotate(-8deg); box-shadow: 0 0 32px rgba(255,181,71,0.4); }
+    #tips-btn:hover { transform:scale(1.1) rotate(-8deg); box-shadow:0 0 32px rgba(255,181,71,0.4); }
 
-    /* ── TIPS MODAL OVERLAY ── */
+    /* ── TIPS MODAL OVERLAY ──
+       Full-screen backdrop. Hidden by default (display:none); .open class
+       switches it to flex to centre the modal. backdrop-filter adds blur. */
     #tips-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-      align-items: center; justify-content: center;
-      padding: 1.5rem; z-index: 99999;
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,0.7); backdrop-filter:blur(8px);
+      align-items:center; justify-content:center;
+      padding:1.5rem; z-index:99999;
     }
-    #tips-overlay.open { display: flex; }
+    #tips-overlay.open { display:flex; }
 
-    /* Tips modal box */
+    /* Spring-like entrance animation — cubic-bezier overshoots slightly for bounce */
     #tips-modal {
-      width: 100%; max-width: 500px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-xl); overflow: hidden;
-      box-shadow: 0 32px 80px rgba(0,0,0,0.5);
-      animation: popIn 0.22s cubic-bezier(0.34,1.56,0.64,1);
+      width:100%; max-width:500px; background:var(--bg-card);
+      border:1px solid var(--border-soft); border-radius:var(--radius-xl); overflow:hidden;
+      box-shadow:0 32px 80px rgba(0,0,0,0.5);
+      animation:popIn 0.22s cubic-bezier(0.34,1.56,0.64,1);
     }
-    @keyframes popIn { from { opacity:0; transform:scale(0.88); } to { opacity:1; transform:scale(1); } }
+    @keyframes popIn { from{opacity:0;transform:scale(0.88);} to{opacity:1;transform:scale(1);} }
 
-    #tips-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.2rem 1.4rem;
-      border-bottom: 1px solid var(--border);
-      background: linear-gradient(135deg, var(--amber-dim), transparent);
+    #tips-header { display:flex; align-items:center; justify-content:space-between; padding:1.2rem 1.4rem; border-bottom:1px solid var(--border); background:linear-gradient(135deg,var(--amber-dim),transparent); }
+    #tips-type-badge { display:block; font-family:'JetBrains Mono',monospace; font-size:0.68rem; font-weight:700; color:var(--amber); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:3px; }
+    #tips-close { background:var(--bg-card-2); border:1px solid var(--border); color:var(--muted); font-size:0.85rem; width:28px; height:28px; border-radius:var(--radius-sm); display:grid; place-items:center; transition:all 0.15s; }
+    #tips-close:hover { color:var(--text); border-color:var(--border-soft); }
+    #tips-body    { padding:1.5rem 1.4rem; min-height:120px; display:flex; align-items:center; }
+    #tips-content { width:100%; }
+    #tips-loading { display:flex; align-items:center; gap:0.75rem; color:var(--muted); font-size:0.9rem; }
+
+    /* CSS-only spinner — border-top-color is amber, rest is transparent,
+       creating a rotating amber arc effect */
+    .spinner { width:18px; height:18px; flex-shrink:0; border:2px solid var(--border-soft); border-top-color:var(--amber); border-radius:50%; animation:spin 0.7s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg);} }
+
+    #tips-text         { font-size:0.925rem; line-height:1.8; color:var(--text); display:none; }
+    #tips-text strong  { color:var(--amber); }
+    #tips-footer  { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.4rem; border-top:1px solid var(--border); background:var(--bg-surface); }
+    #tips-refresh { font-family:'JetBrains Mono',monospace; font-size:0.72rem; padding:0.6rem 1.1rem; border:1px solid var(--border-soft); border-radius:var(--radius-sm); color:var(--muted); display:flex; align-items:center; gap:0.4rem; transition:all 0.2s; }
+    #tips-refresh:hover { border-color:var(--amber); color:var(--amber); }
+    #tips-category { font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; max-width:180px; text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity:0; transform:translateY(20px); transition:opacity 0.55s ease,transform 0.55s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:960px) {
+      .project-card { grid-template-columns:1fr; }
+      .project-visual { border-left:none; border-top:1px solid var(--border); }
     }
-
-    #tips-type-badge {
-      display: block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem; font-weight: 700;
-      color: var(--amber); text-transform: uppercase; letter-spacing: 0.12em;
-      margin-bottom: 3px;
-    }
-
-    #tips-close {
-      background: var(--bg-card-2); border: 1px solid var(--border);
-      color: var(--muted); font-size: 0.85rem;
-      width: 28px; height: 28px; border-radius: var(--radius-sm);
-      display: grid; place-items: center; transition: all 0.15s;
-    }
-    #tips-close:hover { color: var(--text); border-color: var(--border-soft); }
-
-    #tips-body {
-      padding: 1.5rem 1.4rem; min-height: 120px;
-      display: flex; align-items: center;
-    }
-
-    #tips-content { width: 100%; }
-
-    #tips-loading {
-      display: flex; align-items: center; gap: 0.75rem;
-      color: var(--muted); font-size: 0.9rem;
-    }
-
-    .spinner {
-      width: 18px; height: 18px; flex-shrink: 0;
-      border: 2px solid var(--border-soft);
-      border-top-color: var(--amber);
-      border-radius: 50%; animation: spin 0.7s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    #tips-text { font-size: 0.925rem; line-height: 1.8; color: var(--text); display: none; }
-    #tips-text strong { color: var(--amber); }
-
-    #tips-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 1.4rem;
-      border-top: 1px solid var(--border);
-      background: var(--bg-surface);
-    }
-
-    #tips-refresh {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
-      padding: 0.6rem 1.1rem; border: 1px solid var(--border-soft);
-      border-radius: var(--radius-sm); color: var(--muted);
-      display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s;
-    }
-    #tips-refresh:hover { border-color: var(--amber); color: var(--amber); }
-
-    #tips-category {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.1em;
-      max-width: 180px; text-align: right;
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-
-    /* ── SCROLL FADE-IN ANIMATION ── */
-    .reveal {
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.55s ease, transform 0.55s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── RESPONSIVE BREAKPOINTS ── */
-    @media (max-width: 960px) {
-      .project-card { grid-template-columns: 1fr; }
-      .project-visual { border-left: none; border-top: 1px solid var(--border); }
-    }
-    @media (max-width: 720px) {
-      .site-nav { padding: 1rem 1.5rem; }
-      .site-menu { display: none; }
-      .section, #hero { padding: 4.5rem 1.5rem; }
-      .contact-card { padding: 2rem 1.5rem; }
+    @media (max-width:720px) {
+      .site-nav { padding:1rem 1.5rem; }
+      .site-menu { display:none; }
+      .section, #hero { padding:4.5rem 1.5rem; }
+      .contact-card { padding:2rem 1.5rem; }
     }
   </style>
 </head>
 <body>
 <div class="page">
 
-  <!-- Ambient background glows -->
+  <!-- Ambient background glows (decorative, hidden from screen readers) -->
   <div class="glow-tl" aria-hidden="true"></div>
   <div class="glow-br" aria-hidden="true"></div>
 
-  <!-- ── NAVIGATION: sticky top bar with brand and section links ── -->
+  <!--
+    NAVIGATION
+    Sticky top bar that stays visible while scrolling.
+    Links scroll to each named section anchor on the page.
+  -->
   <nav class="site-nav">
     <div class="site-brand">ganesh.putran</div>
     <ul class="site-menu">
@@ -515,7 +339,11 @@
 
   <main>
 
-    <!-- ── HERO: name, role, description, CTA buttons, stats ── -->
+    <!--
+      HERO SECTION
+      Full-viewport opening section with name, role, description,
+      call-to-action buttons, and four headline stats.
+    -->
     <section class="section" id="hero">
       <div class="hero-inner">
         <div class="hero-tag">Available for opportunities</div>
@@ -535,51 +363,34 @@
       </div>
     </section>
 
-    <!-- ── SKILLS: six tool/skill cards with tags ── -->
+    <!--
+      SKILLS SECTION
+      Two sub-grids:
+      1. Technical skill cards — injected by renderTechSkills() from TECH_SKILLS array.
+      2. Soft skill cards    — injected by renderSoftSkills() from SOFT_SKILLS array.
+      To add/edit skills, update the JS arrays — no HTML changes needed.
+    -->
     <section class="section reveal" id="skills">
       <div class="section-label">What I know</div>
       <h2 class="section-title">Skills &amp; tools</h2>
-      <div class="skills-grid">
-        <article class="skill-card c-green reveal">
-          <div class="skill-icon">⚙️</div>
-          <h3>CI/CD Pipelines</h3>
-          <p>Building automated pipelines that test, validate, and deploy code on every push using GitHub Actions.</p>
-          <div class="tag-group"><span class="tag">GitHub Actions</span><span class="tag">YAML</span><span class="tag">pytest</span><span class="tag">coverage</span></div>
-        </article>
-        <article class="skill-card c-blue reveal">
-          <div class="skill-icon">🤖</div>
-          <h3>AI Integration</h3>
-          <p>Connecting LLM APIs into DevOps workflows to auto-explain failures and review code changes.</p>
-          <div class="tag-group"><span class="tag">Gemini API</span><span class="tag">Prompt engineering</span><span class="tag">REST APIs</span></div>
-        </article>
-        <article class="skill-card c-purple reveal">
-          <div class="skill-icon">🐍</div>
-          <h3>Python scripting</h3>
-          <p>Writing automation scripts, API clients, and test suites that power the DevOps pipeline.</p>
-          <div class="tag-group"><span class="tag">Python 3</span><span class="tag">pytest</span><span class="tag">JSON</span><span class="tag">urllib</span></div>
-        </article>
-        <article class="skill-card c-amber reveal">
-          <div class="skill-icon">📊</div>
-          <h3>Observability</h3>
-          <p>Building live dashboards that surface pipeline health, build history, and AI-generated summaries.</p>
-          <div class="tag-group"><span class="tag">GitHub API</span><span class="tag">GitHub Pages</span><span class="tag">HTML/CSS/JS</span></div>
-        </article>
-        <article class="skill-card c-green reveal">
-          <div class="skill-icon">🔀</div>
-          <h3>Git &amp; Version Control</h3>
-          <p>Managing branches, pull requests, and collaborative workflows using Git and GitHub.</p>
-          <div class="tag-group"><span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">Pull requests</span></div>
-        </article>
-        <article class="skill-card c-blue reveal">
-          <div class="skill-icon">🔒</div>
-          <h3>DevSecOps basics</h3>
-          <p>Storing secrets safely with GitHub Secrets and following security best practices in pipelines.</p>
-          <div class="tag-group"><span class="tag">GitHub Secrets</span><span class="tag">Env vars</span><span class="tag">API key safety</span></div>
-        </article>
+
+      <!-- Technical skills: populated dynamically by renderTechSkills() -->
+      <div class="skills-grid" id="tech-skills-grid"></div>
+
+      <!-- Soft skills sub-heading and grid -->
+      <div style="margin-top:3rem;">
+        <div class="soft-section-label">How I work</div>
+        <!-- Soft skills: populated dynamically by renderSoftSkills() -->
+        <div class="soft-skills-grid" id="soft-skills-grid"></div>
       </div>
     </section>
 
-    <!-- ── PROJECT: featured project card with pipeline visual ── -->
+    <!--
+      PROJECT SECTION
+      Featured project card showing the AI DevOps Bot.
+      Left side: description, stages, links.
+      Right side: visual mockup of the pipeline and AI review comment.
+    -->
     <section class="section reveal" id="project">
       <div class="section-label">What I built</div>
       <h2 class="section-title">AI DevOps Bot</h2>
@@ -617,7 +428,10 @@
       </div>
     </section>
 
-    <!-- ── JOURNEY: learning timeline cards ── -->
+    <!--
+      JOURNEY SECTION
+      Four timeline cards showing the learning stages in chronological order.
+    -->
     <section class="section reveal" id="journey">
       <div class="section-label">How I got here</div>
       <h2 class="section-title">Learning journey</h2>
@@ -645,7 +459,11 @@
       </div>
     </section>
 
-    <!-- ── CONTACT: social links card ── -->
+    <!--
+      CONTACT SECTION
+      Centred card with GitHub and LinkedIn links.
+      Update the LinkedIn href with your actual profile URL.
+    -->
     <section class="section reveal" id="contact">
       <div class="contact-card">
         <div class="section-label">Get in touch</div>
@@ -666,7 +484,7 @@
 
   </main>
 
-  <!-- ── FOOTER ── -->
+  <!-- FOOTER -->
   <footer>
     built with GitHub Actions + Gemini AI &nbsp;·&nbsp;
     <a href="https://github.com/noobstar2306/ai-devops-bot" target="_blank" rel="noopener">noobstar2306/ai-devops-bot</a>
@@ -674,22 +492,31 @@
     <a href="https://noobstar2306.github.io/ai-devops-bot/" target="_blank" rel="noopener">pipeline dashboard</a>
   </footer>
 
-  <!-- ── TIPS BUTTON: fixed floating button that opens the AI tips modal ── -->
+  <!--
+    TIPS BUTTON
+    Fixed floating button that opens the AI tips modal.
+    aria-label provides accessible text since the button only contains an emoji.
+  -->
   <button id="tips-btn" type="button" aria-label="Get an AI DevOps tip" title="AI DevOps Tips">💡</button>
 
-  <!-- ── TIPS MODAL: dialog showing rotating AI-generated DevOps tips ── -->
+  <!--
+    TIPS MODAL
+    Dialog showing a Gemini-generated DevOps tip.
+    Structure: overlay (backdrop) > modal > header / body / footer.
+    Opened by openTips(), closed by closeTips().
+  -->
   <div id="tips-overlay" role="dialog" aria-modal="true" aria-labelledby="tips-type-badge">
     <div id="tips-modal">
       <div id="tips-header">
         <div id="tips-title">
           <span id="tips-type-badge">Did you know?</span>
-          <span style="font-size:0.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;">AI DevOps Tips</span>
+          <span style="font-size:0.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;">AI DevOps Tips — powered by Gemini</span>
         </div>
         <button id="tips-close" type="button" aria-label="Close tips">✕</button>
       </div>
       <div id="tips-body">
         <div id="tips-content">
-          <div id="tips-loading"><div class="spinner"></div><span>Loading tip...</span></div>
+          <div id="tips-loading"><div class="spinner"></div><span>Generating tip...</span></div>
           <div id="tips-text" style="display:none"></div>
         </div>
       </div>
@@ -700,76 +527,265 @@
     </div>
   </div>
 
-</div><!-- .page -->
+</div><!-- /.page -->
 
 <script>
-  // ── TIPS DATA: hardcoded tips shown in the floating modal popup ──
-  const TIPS = [
-    { category: 'Did you know?',  topic: 'GitHub Actions',       text: '<strong>GitHub Actions is free for public repos.</strong> Your entire CI pipeline — tests, AI review, and deployments — runs on GitHub\'s servers at no cost for open source projects.' },
-    { category: 'Pro tip',        topic: 'AI in DevOps',          text: '<strong>Use AI for signals, not decisions.</strong> AI shines when summarising failures and suggesting fixes, but keep final deployment control in your pipeline logic.' },
-    { category: 'Quick fact',     topic: 'Python automation',     text: '<strong>Scripting eliminates repetitive work.</strong> Automating environment setup, release notes, and health checks makes every push more reliable and saves hours each week.' },
-    { category: 'Best practice',  topic: 'DevSecOps',             text: '<strong>Never store secrets in source code.</strong> Use platform secrets and environment variables so credentials stay out of Git history and audit logs.' },
-    { category: 'Fun fact',       topic: 'Observability',         text: '<strong>Dashboards are better with context.</strong> Add pass/fail rates and trends so stakeholders can understand pipeline health at a glance without digging into logs.' },
-    { category: 'Pro tip',        topic: 'CI/CD',                 text: '<strong>Fail fast, fix fast.</strong> Keep individual CI jobs under 5 minutes by caching dependencies and running only affected tests on each push.' },
-    { category: 'Did you know?',  topic: 'Git branching',         text: '<strong>Branch strategies prevent chaos.</strong> Using feature branches and PR reviews ensures main stays stable and every change is intentional and reviewed.' },
-    { category: 'Best practice',  topic: 'Infrastructure as Code',text: '<strong>Treat infrastructure like software.</strong> Version-controlling your configs in Terraform or Ansible means you can reproduce any environment and roll back safely.' },
+  // ── CONFIGURATION ──
+  // GEMINI_KEY is injected at deploy time by the GitHub Actions workflow
+  // using a sed command that replaces this placeholder with the real key
+  // from GitHub Secrets. The key never appears in source code.
+  const GEMINI_KEY = "PASTE_GEMINI_TIPS_KEY_HERE";
+
+  // ── TECHNICAL SKILLS DATA ──
+  // Each entry renders as one skill card in the technical skills grid.
+  // To add or remove a skill: edit this array only — no HTML changes needed.
+  // Fields:
+  //   color — CSS class suffix controlling the card's accent colour
+  //   icon  — emoji displayed at the top of the card
+  //   title — card heading
+  //   desc  — one-sentence description of the skill
+  //   tags  — array of tool/technology labels shown as pills
+  const TECH_SKILLS = [
+    {
+      color: 'c-green', icon: '⚙️',
+      title: 'CI/CD Pipelines',
+      desc:  'Building automated pipelines that test, validate, and deploy code on every push using GitHub Actions.',
+      tags:  ['GitHub Actions', 'YAML', 'pytest', 'coverage']
+    },
+    {
+      color: 'c-blue', icon: '🤖',
+      title: 'AI Integration',
+      desc:  'Connecting LLM APIs into DevOps workflows to auto-explain failures and review code changes.',
+      tags:  ['Gemini API', 'Prompt engineering', 'REST APIs']
+    },
+    {
+      color: 'c-purple', icon: '🐍',
+      title: 'Python scripting',
+      desc:  'Writing automation scripts, API clients, and test suites that power the DevOps pipeline.',
+      tags:  ['Python 3', 'pytest', 'JSON', 'urllib']
+    },
+    {
+      color: 'c-amber', icon: '📊',
+      title: 'Observability',
+      desc:  'Building live dashboards that surface pipeline health, build history, and AI-generated summaries.',
+      tags:  ['GitHub API', 'GitHub Pages', 'HTML/CSS/JS']
+    },
+    {
+      color: 'c-green', icon: '🔀',
+      title: 'Git & Version Control',
+      desc:  'Managing branches, pull requests, and collaborative workflows using Git and GitHub.',
+      tags:  ['Git', 'GitHub', 'Pull requests', 'Branching']
+    },
+    {
+      color: 'c-blue', icon: '🔒',
+      title: 'DevSecOps basics',
+      desc:  'Storing secrets safely with GitHub Secrets and following security best practices in pipelines.',
+      tags:  ['GitHub Secrets', 'Env vars', 'API key safety']
+    }
   ];
 
-  // Cache DOM references once to avoid repeated lookups
-  const overlay  = document.getElementById('tips-overlay');
-  const loading  = document.getElementById('tips-loading');
-  const tipsText = document.getElementById('tips-text');
-  const badge    = document.getElementById('tips-type-badge');
-  const category = document.getElementById('tips-category');
+  // ── SOFT SKILLS DATA ──
+  // Non-technical working traits rendered below the technical skills grid.
+  // Each entry renders as one soft-skill card.
+  // To add or edit: update this array only.
+  const SOFT_SKILLS = [
+    {
+      icon: '🔍', title: 'Problem solver',
+      desc: 'Breaks down complex errors systematically — reading logs, isolating causes, and iterating until fixed.'
+    },
+    {
+      icon: '📖', title: 'Fast learner',
+      desc: 'Built a full AI DevOps pipeline from zero knowledge in a single day by learning and applying iteratively.'
+    },
+    {
+      icon: '🗣️', title: 'Clear communicator',
+      desc: 'Explains technical decisions in plain language — useful for cross-functional teams and documentation.'
+    },
+    {
+      icon: '🔄', title: 'Iterative mindset',
+      desc: 'Comfortable shipping imperfect work early, gathering feedback, and improving in small focused cycles.'
+    },
+    {
+      icon: '🤝', title: 'Collaborative',
+      desc: 'Uses pull requests, code review, and shared tooling to keep work transparent and team-friendly.'
+    },
+    {
+      icon: '🎯', title: 'Attention to detail',
+      desc: 'Catches edge cases in tests, naming clarity in code, and broken links in deployments before they ship.'
+    }
+  ];
 
-  // ── openTips: shows the modal overlay and renders a tip ──
+  // ── TIPS CONFIGURATION ──
+  // Random category labels and DevOps/AI topics fed into the Gemini prompt.
+  // All topics are strictly DevOps, cloud, or AI/ML engineering — no generic content.
+  // A random pair is chosen each time the tips modal opens or refreshes.
+  const CATEGORIES = ['Did you know?', 'Pro tip', 'Quick fact', 'Best practice', 'Fun fact'];
+  const TOPICS = [
+    'GitHub Actions CI/CD pipelines',
+    'AI-powered DevOps and AIOps',
+    'Docker containerisation',
+    'Kubernetes orchestration and deployments',
+    'DevSecOps and pipeline security',
+    'Python automation scripts for DevOps',
+    'Monitoring and observability with dashboards',
+    'Git branching strategies and best practices',
+    'Infrastructure as Code with Terraform',
+    'LLM APIs integrated into DevOps workflows',
+    'Gemini and Claude APIs for build automation',
+    'GitHub Secrets and secrets management',
+    'Automated code review in CI pipelines',
+    'Container registries and image management',
+    'Shift-left testing in DevOps pipelines'
+  ];
+
+  // ── renderTechSkills ──
+  // Reads TECH_SKILLS and injects one <article> card per entry into
+  // #tech-skills-grid. Each card has an icon, title, description, and tag pills.
+  // After injection, newly created .reveal elements are registered with the
+  // scroll observer so they animate in when they enter the viewport.
+  function renderTechSkills() {
+    const grid = document.getElementById('tech-skills-grid');
+    grid.innerHTML = TECH_SKILLS.map(s => `
+      <article class="skill-card ${s.color} reveal">
+        <div class="skill-icon">${s.icon}</div>
+        <h3>${s.title}</h3>
+        <p>${s.desc}</p>
+        <div class="tag-group">${s.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      </article>
+    `).join('');
+    grid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  }
+
+  // ── renderSoftSkills ──
+  // Reads SOFT_SKILLS and injects one card per entry into #soft-skills-grid.
+  // Soft cards are simpler than technical cards — icon box, title, one-liner.
+  // Newly injected .reveal elements are registered with the scroll observer.
+  function renderSoftSkills() {
+    const grid = document.getElementById('soft-skills-grid');
+    grid.innerHTML = SOFT_SKILLS.map(s => `
+      <div class="soft-card reveal">
+        <div class="soft-card-icon">${s.icon}</div>
+        <div>
+          <h4>${s.title}</h4>
+          <p>${s.desc}</p>
+        </div>
+      </div>
+    `).join('');
+    grid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  }
+
+  // ── openTips ──
+  // Shows the tips modal overlay and immediately calls fetchTip() to
+  // load a fresh AI-generated tip from the Gemini API.
   function openTips() {
-    overlay.classList.add('open');
-    renderTip();
+    document.getElementById('tips-overlay').classList.add('open');
+    fetchTip();
   }
 
-  // ── closeTips: hides the modal overlay ──
+  // ── closeTips ──
+  // Hides the tips modal by removing the "open" class from the overlay.
   function closeTips() {
-    overlay.classList.remove('open');
+    document.getElementById('tips-overlay').classList.remove('open');
   }
 
-  // ── renderTip: picks a random tip and displays it with a loading delay ──
-  function renderTip() {
-    const tip = TIPS[Math.floor(Math.random() * TIPS.length)];
-    badge.textContent    = tip.category;
-    category.textContent = tip.topic;
+  // ── fetchTip ──
+  // Picks a random category and topic, shows the spinner, then calls
+  // the Gemini API to generate a unique DevOps tip.
+  // On success: hides spinner and renders the tip as HTML.
+  // On failure: shows a friendly connection error message.
+  async function fetchTip() {
+    const loadingEl  = document.getElementById('tips-loading');
+    const textEl     = document.getElementById('tips-text');
+    const badgeEl    = document.getElementById('tips-type-badge');
+    const categoryEl = document.getElementById('tips-category');
 
-    // Show spinner briefly for visual feedback
-    loading.style.display  = 'flex';
-    tipsText.style.display = 'none';
+    // Pick a random category + topic for variety on each open / refresh
+    const category = CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)];
+    const topic    = TOPICS[Math.floor(Math.random() * TOPICS.length)];
 
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        loading.style.display  = 'none';
-        tipsText.innerHTML     = tip.text;
-        tipsText.style.display = 'block';
-      }, 280);
-    });
+    // Update header labels and show the spinner
+    badgeEl.textContent    = category;
+    categoryEl.textContent = topic;
+    loadingEl.style.display = 'flex';
+    textEl.style.display    = 'none';
+    textEl.innerHTML        = '';
+
+    try {
+      // POST to Gemini generateContent with a tightly structured prompt
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
+        {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: `Give me one "${category}" about: ${topic}.
+This must be strictly about DevOps, CI/CD, cloud engineering, or AI/ML in DevOps.
+Start with a bold heading using <strong> tags, then 2-3 sentences.
+Keep it practical and specific for a beginner DevOps engineer.
+No bullet points. No preamble. Just the tip directly.`
+              }]
+            }]
+          })
+        }
+      );
+
+      const data    = await res.json();
+      // Navigate the Gemini response: candidates[0].content.parts[0].text
+      const tipText = data.candidates?.[0]?.content?.parts?.[0]?.text
+        || 'Could not load tip. Try again!';
+
+      // Hide spinner and display the generated tip
+      loadingEl.style.display = 'none';
+      textEl.style.display    = 'block';
+      textEl.innerHTML        = tipText;
+
+    } catch (err) {
+      // Show friendly error if network or API call fails
+      loadingEl.style.display = 'none';
+      textEl.style.display    = 'block';
+      textEl.innerHTML        = '<strong>Connection error.</strong> Try clicking New tip.';
+    }
   }
 
-  // ── Event listeners: wire up all tips modal interactions ──
+  // ── Event listeners ──
+  // Wire up tips modal interactions using addEventListener (not onclick
+  // attributes) for clean separation of HTML structure and JS behaviour.
   document.getElementById('tips-btn').addEventListener('click', openTips);
   document.getElementById('tips-close').addEventListener('click', closeTips);
-  document.getElementById('tips-refresh').addEventListener('click', renderTip);
-  overlay.addEventListener('click', e => { if (e.target === overlay) closeTips(); });
+  document.getElementById('tips-refresh').addEventListener('click', fetchTip);
+
+  // Close when clicking the dark backdrop outside the modal box
+  document.getElementById('tips-overlay').addEventListener('click', e => {
+    if (e.target.id === 'tips-overlay') closeTips();
+  });
+
+  // Close on Escape key for keyboard accessibility
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTips(); });
 
-  // ── Scroll reveal: observe elements and add 'visible' class when in viewport ──
+  // ── Scroll reveal observer ──
+  // Watches .reveal elements and adds the "visible" class when they enter
+  // the viewport, triggering the CSS fade-up animation.
+  // unobserve() stops watching after the element has appeared once —
+  // more efficient than watching every element on every scroll event.
   const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         e.target.classList.add('visible');
-        revealObserver.unobserve(e.target); // stop watching once visible
+        revealObserver.unobserve(e.target);
       }
     });
   }, { threshold: 0.1 });
 
+  // Observe static .reveal elements already in the HTML
   document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // ── Initialise ──
+  // Render both skill grids immediately on page load so content appears
+  // without waiting for any user interaction.
+  renderTechSkills();
+  renderSoftSkills();
 </script>
 </body>
 </html>
