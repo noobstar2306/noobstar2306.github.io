@@ -289,7 +289,7 @@
         </div>
         <div class="hero-stats">
           <div class="hero-stat"><div class="num">4</div><div class="lbl">Project stages</div></div>
-          <div class="hero-stat"><div class="num">10</div><div class="lbl">Automated tests</div></div>
+          <div class="hero-stat"><div class="num">15</div><div class="lbl">Automated tests</div></div>
           <div class="hero-stat"><div class="num">3</div><div class="lbl">AI integrations</div></div>
           <div class="hero-stat"><div class="num">1</div><div class="lbl">Live dashboard</div></div>
         </div>
@@ -333,29 +333,28 @@
           <h3>AI-powered CI/CD pipeline with auto-review &amp; live dashboard</h3>
           <p>A fully automated DevOps system built from scratch. It tests code on every push, explains failures in plain English, reviews pull requests automatically, and shows live pipeline health publicly.</p>
           <div class="project-stages">
-            <div class="stage-row"><span class="stage-dot"></span> GitHub Actions CI — runs 10 tests on every push</div>
+            <div class="stage-row"><span class="stage-dot"></span> GitHub Actions CI — runs 15 tests on every push</div>
             <div class="stage-row"><span class="stage-dot"></span> AI failure explainer — Gemini explains broken builds on PRs</div>
             <div class="stage-row"><span class="stage-dot"></span> AI code review bot — auto-reviews every pull request</div>
             <div class="stage-row"><span class="stage-dot"></span> Live dashboard — public pipeline health page</div>
           </div>
           <div class="project-links">
             <a href="https://github.com/noobstar2306/ai-devops-bot" target="_blank" rel="noopener" class="btn btn-secondary">GitHub repo</a>
-            <a href="https://noobstar2306.github.io/ai-devops-bot/dashboard/index.html" target="_blank" rel="noopener" class="btn btn-primary">Live dashboard →</a>
+            <a href="https://noobstar2306.github.io/ai-devops-bot/" target="_blank" rel="noopener" class="btn btn-primary">Live dashboard →</a>
           </div>
         </div>
         <aside class="project-visual">
+          <!-- Live pipeline data fetched by widgets.js from GitHub Actions API -->
           <div class="mini-pipeline">
-            <div class="pipeline-title">CI pipeline — last run</div>
-            <div class="pipeline-step"><span>✅</span> Checkout code <span class="step-time">1s</span></div>
-            <div class="pipeline-step"><span>✅</span> Setup Python 3.11 <span class="step-time">3s</span></div>
-            <div class="pipeline-step"><span>✅</span> Install dependencies <span class="step-time">8s</span></div>
-            <div class="pipeline-step"><span>✅</span> Run tests (10 passed) <span class="step-time">2s</span></div>
-            <div class="pipeline-step"><span>✅</span> AI code review posted <span class="step-time">4s</span></div>
-            <div class="pipeline-step"><span>✅</span> Coverage check (62%) <span class="step-time">1s</span></div>
+            <div class="pipeline-title" id="pipeline-title">CI pipeline — last run</div>
+            <div id="pipeline-steps">
+              <!-- Skeleton loading state -->
+              <div class="pipeline-step pipeline-loading"><span>⏳</span> Loading pipeline data...</div>
+            </div>
           </div>
-          <div class="mini-comment">
+          <div class="mini-comment" id="pipeline-comment">
             <div class="comment-header">🤖 AI Code Review</div>
-            Great work on this PR! The new function is clean and readable. Consider adding a docstring and unit test for full coverage. Solid work — keep it up!
+            <div id="pipeline-comment-body">Fetching latest review...</div>
           </div>
         </aside>
       </div>
@@ -372,7 +371,7 @@
         <article class="timeline-card reveal">
           <div class="timeline-meta">Week 1–3</div>
           <h3 class="timeline-title">First CI pipeline</h3>
-          <p class="timeline-desc">Learned Git, GitHub, and GitHub Actions from scratch. Built a Python app with 10 automated tests and a working CI pipeline that runs on every push.</p>
+          <p class="timeline-desc">Learned Git, GitHub, and GitHub Actions from scratch. Built a Python app with 15 automated tests and a working CI pipeline that runs on every push.</p>
         </article>
         <article class="timeline-card reveal">
           <div class="timeline-meta">Week 4–6</div>
@@ -422,7 +421,7 @@
     built with GitHub Actions + Gemini AI &nbsp;·&nbsp;
     <a href="https://github.com/noobstar2306/ai-devops-bot" target="_blank" rel="noopener">noobstar2306/ai-devops-bot</a>
     &nbsp;·&nbsp;
-    <a href="https://noobstar2306.github.io/ai-devops-bot/dashboard/index.html" target="_blank" rel="noopener">pipeline dashboard</a>
+    <a href="https://noobstar2306.github.io/ai-devops-bot/" target="_blank" rel="noopener">pipeline dashboard</a>
     &nbsp;·&nbsp;
     <a href="https://noobstar2306.github.io/ai-devops-bot/hobbies.html" target="_blank" rel="noopener">hobbies</a>
   </footer>
