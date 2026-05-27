@@ -8,16 +8,16 @@ Personal portfolio site for Ganesh Putran, DevOps Engineer.
 
 ## Architecture
 
-This repo is the **appearance layer only** — pure HTML and CSS with no hardcoded functionality or API keys. All interactive features (AI tips, help modal, skills rendering, hobbies button) are loaded from the [ai-devops-bot](https://github.com/noobstar2306/ai-devops-bot) repo via a single script tag:
+This repo is the **appearance layer only** — pure HTML and CSS with zero JavaScript logic, zero API keys, and zero business logic. All interactive features are loaded from the [ai-devops-bot](https://github.com/noobstar2306/ai-devops-bot) repo via a single script tag:
 
 ```html
 <script src="https://noobstar2306.github.io/ai-devops-bot/widgets.js"></script>
 ```
 
 This separation means:
-- Updating a feature → edit `widgets.js` in `ai-devops-bot` only
-- Updating the design → edit `index.html` here only
-- No risk of breaking functionality when changing appearance
+- Updating a feature → edit `widgets.js` in `ai-devops-bot` — no changes needed here
+- Updating the design → edit `index.html` here — functionality untouched
+- No API keys ever in this repo
 
 ---
 
@@ -26,37 +26,48 @@ This separation means:
 ```
 noobstar2306.github.io/
 │
-├── index.html              # Portfolio — appearance only
+├── index.html              # Portfolio — appearance only (441 lines)
 └── .github/workflows/
-    └── deploy.yml          # Injects secrets, deploys to GitHub Pages
+    └── deploy.yml          # Deploys to GitHub Pages (no secret injection needed)
 ```
 
 ---
 
 ## Features loaded from widgets.js
 
+All functionality is served from `ai-devops-bot` via the Cloudflare Worker proxy. No keys are injected here.
+
 | Feature | Description |
 |---------|-------------|
-| 💡 AI tips | Gemini-generated DevOps tips on demand |
-| ❓ Help modal | GitHub issue creator with repo routing |
+| 💡 AI tips | Gemini-generated DevOps tips via Cloudflare Worker |
+| ❓ Help modal | GitHub issue creator with bug/suggestion routing |
 | 🎯 Hobbies button | Links to the hobbies & interests page |
 | 📖 README tooltip | Shows repo README on hover over help button |
-| ⚙️ Skills grid | Tech and soft skills rendered dynamically |
+| ⚙️ Skills grid | 10 tech + 6 soft skill cards rendered dynamically |
+| 🎨 Scroll reveal | Cards fade in as you scroll down |
+
+---
+
+## Issue routing
+
+The ❓ help button routes issues to the correct repo automatically:
+
+| Issue type | Destination |
+|-----------|-------------|
+| 🐛 Bug / ❓ Question | `noobstar2306/ai-devops-bot` |
+| 💡 Suggestion / ✨ Improvement | `noobstar2306/noobstar2306.github.io` |
 
 ---
 
 ## Deployment
 
-Pushes to `main` trigger the Deploy Portfolio workflow which:
-1. Injects `GEMINI_TIPS_KEY` and `GH_PAT` from GitHub Secrets into `index.html`
-2. Deploys to GitHub Pages
+Pushes to `main` trigger the **Deploy Portfolio** workflow:
+1. Checkout code
+2. Configure GitHub Pages
+3. Upload `index.html` to GitHub Pages
+4. Deploy
 
-### GitHub Secrets required
-
-| Secret | Purpose |
-|--------|---------|
-| `GEMINI_TIPS_KEY` | Gemini API key for AI tips (injected into widgets.js at deploy) |
-| `GH_PAT` | GitHub PAT for issue creation (injected into widgets.js at deploy) |
+**No secret injection** — all API calls go through the Cloudflare Worker in `ai-devops-bot`. This repo requires zero GitHub Secrets.
 
 ---
 
@@ -64,7 +75,14 @@ Pushes to `main` trigger the Deploy Portfolio workflow which:
 
 | Repo | Purpose |
 |------|---------|
-| [ai-devops-bot](https://github.com/noobstar2306/ai-devops-bot) | All functionality — dashboard, hobbies, widgets, CI pipeline |
+| [ai-devops-bot](https://github.com/noobstar2306/ai-devops-bot) | All functionality — dashboard, hobbies, widgets, CI pipeline, Cloudflare Worker |
+
+---
+
+## Full documentation
+
+- [Project wiki](https://github.com/noobstar2306/ai-devops-bot/wiki) — architecture, features, security, roadmap
+- [Project documentation](https://github.com/noobstar2306/ai-devops-bot/blob/main/PROJECT_DOCUMENTATION.md) — comprehensive technical report
 
 ---
 
@@ -74,3 +92,4 @@ Pushes to `main` trigger the Deploy Portfolio workflow which:
 - GitHub: [noobstar2306](https://github.com/noobstar2306)
 - LinkedIn: [ganesh-putran](https://www.linkedin.com/in/ganesh-putran-b047ba235/)
 - Dashboard: [noobstar2306.github.io/ai-devops-bot](https://noobstar2306.github.io/ai-devops-bot/)
+- Hobbies: [noobstar2306.github.io/ai-devops-bot/hobbies.html](https://noobstar2306.github.io/ai-devops-bot/hobbies.html)
