@@ -279,19 +279,19 @@
     -->
     <section class="section" id="hero">
       <div class="hero-inner">
-        <div class="hero-tag">Available for opportunities</div>
+        <div class="hero-tag">Available for opportunities · May 2026</div>
         <h1 class="hero-title">Ganesh Putran<br/><span class="accent">DevOps</span> Engineer</h1>
         <p class="hero-role">// AI-powered automation &amp; CI/CD</p>
-        <p class="hero-desc">Building intelligent pipelines that test, explain failures, review code, and monitor production — powered by AI. Learning and shipping real projects from scratch.</p>
+        <p class="hero-desc">Building AI-powered CI/CD pipelines, serverless API proxies, observability tooling, and live dashboards — all deployed on free infrastructure. Every feature on this site demonstrates the skills it describes.</p>
         <div class="hero-actions">
           <a href="#project" class="btn btn-primary">View my project →</a>
           <a href="#contact" class="btn btn-secondary">Get in touch</a>
         </div>
-        <div class="hero-stats">
-          <div class="hero-stat"><div class="num">4</div><div class="lbl">Project stages</div></div>
-          <div class="hero-stat"><div class="num">15</div><div class="lbl">Automated tests</div></div>
-          <div class="hero-stat"><div class="num">3</div><div class="lbl">AI integrations</div></div>
-          <div class="hero-stat"><div class="num">1</div><div class="lbl">Live dashboard</div></div>
+        <div class="hero-stats" id="hero-stats">
+          <div class="hero-stat"><div class="num" id="stat-tests">15</div><div class="lbl">Automated tests</div></div>
+          <div class="hero-stat"><div class="num" id="stat-ai">3</div><div class="lbl">AI integrations</div></div>
+          <div class="hero-stat"><div class="num" id="stat-pages">3</div><div class="lbl">Live pages</div></div>
+          <div class="hero-stat"><div class="num" id="stat-runs">—</div><div class="lbl">Pipeline runs</div></div>
         </div>
       </div>
     </section>
@@ -331,12 +331,13 @@
         <div class="project-info">
           <span class="project-badge">Live project</span>
           <h3>AI-powered CI/CD pipeline with auto-review &amp; live dashboard</h3>
-          <p>A fully automated DevOps system built from scratch. It tests code on every push, explains failures in plain English, reviews pull requests automatically, and shows live pipeline health publicly.</p>
+          <p>A fully automated DevOps system built from zero — CI/CD pipeline, AI integrations, Cloudflare Worker API proxy, reverse proxy, access log monitoring, and three live pages. Every key lives in Cloudflare, never in source code.</p>
           <div class="project-stages">
-            <div class="stage-row"><span class="stage-dot"></span> GitHub Actions CI — runs 15 tests on every push</div>
+            <div class="stage-row"><span class="stage-dot"></span> GitHub Actions CI — 15 tests, 80% coverage, pip caching</div>
             <div class="stage-row"><span class="stage-dot"></span> AI failure explainer — Gemini explains broken builds on PRs</div>
-            <div class="stage-row"><span class="stage-dot"></span> AI code review bot — auto-reviews every pull request</div>
-            <div class="stage-row"><span class="stage-dot"></span> Live dashboard — public pipeline health page</div>
+            <div class="stage-row"><span class="stage-dot"></span> AI code reviewer — reviews every PR diff automatically</div>
+            <div class="stage-row"><span class="stage-dot"></span> Cloudflare Worker proxy — zero API keys in any deployed file</div>
+            <div class="stage-row"><span class="stage-dot"></span> Live dashboard + hobbies page with AI recommendations</div>
           </div>
           <div class="project-links">
             <a href="https://github.com/noobstar2306/ai-devops-bot" target="_blank" rel="noopener" class="btn btn-secondary">GitHub repo</a>
@@ -369,24 +370,24 @@
       <h2 class="section-title">Learning journey</h2>
       <div class="timeline">
         <article class="timeline-card reveal">
-          <div class="timeline-meta">Week 1–3</div>
-          <h3 class="timeline-title">First CI pipeline</h3>
-          <p class="timeline-desc">Learned Git, GitHub, and GitHub Actions from scratch. Built a Python app with 15 automated tests and a working CI pipeline that runs on every push.</p>
+          <div class="timeline-meta">Stage 1</div>
+          <h3 class="timeline-title">CI/CD pipeline</h3>
+          <p class="timeline-desc">Built a 4-stage GitHub Actions pipeline from zero — 15 automated tests, 80% coverage enforcement, pip caching, and pytest discovery. Every push is tested automatically.</p>
         </article>
         <article class="timeline-card reveal">
-          <div class="timeline-meta">Week 4–6</div>
-          <h3 class="timeline-title">AI failure explainer</h3>
-          <p class="timeline-desc">Integrated the Gemini API into the pipeline. When builds fail, the bot posts a plain-English explanation of what went wrong as a PR comment.</p>
+          <div class="timeline-meta">Stage 2</div>
+          <h3 class="timeline-title">AI integrations</h3>
+          <p class="timeline-desc">Integrated Gemini AI into the pipeline — failure explainer reads CI error logs and posts plain-English fixes, code reviewer analyses every PR diff and posts constructive feedback.</p>
         </article>
         <article class="timeline-card reveal">
-          <div class="timeline-meta">Week 7–10</div>
-          <h3 class="timeline-title">AI code review bot</h3>
-          <p class="timeline-desc">Built an automated reviewer that reads every PR diff and posts constructive feedback — like having a senior engineer review every change automatically.</p>
+          <div class="timeline-meta">Stage 3</div>
+          <h3 class="timeline-title">Live dashboard + hobbies</h3>
+          <p class="timeline-desc">Deployed three live pages: portfolio, pipeline dashboard with real-time GitHub Actions data, and a hobbies page with AI-generated recommendations for music, travel, tech, and gaming.</p>
         </article>
         <article class="timeline-card reveal">
-          <div class="timeline-meta">Week 11–16</div>
-          <h3 class="timeline-title">Live ops dashboard</h3>
-          <p class="timeline-desc">Deployed a public dashboard on GitHub Pages showing real-time pipeline health, build history, and AI-generated health summaries.</p>
+          <div class="timeline-meta">Stage 4</div>
+          <h3 class="timeline-title">Security + observability</h3>
+          <p class="timeline-desc">Moved all API keys to a Cloudflare Worker proxy after real-world key revocations. Added Caddy reverse proxy with JSON access logs, hourly health checks, and a custom log analyser.</p>
         </article>
       </div>
     </section>
@@ -418,12 +419,14 @@
 
   <!-- FOOTER -->
   <footer>
-    built with GitHub Actions + Gemini AI &nbsp;·&nbsp;
-    <a href="https://github.com/noobstar2306/ai-devops-bot" target="_blank" rel="noopener">noobstar2306/ai-devops-bot</a>
+    built with GitHub Actions + Gemini AI + Cloudflare Workers &nbsp;·&nbsp;
+    <a href="https://github.com/noobstar2306/ai-devops-bot" target="_blank" rel="noopener">source</a>
     &nbsp;·&nbsp;
-    <a href="https://noobstar2306.github.io/ai-devops-bot/" target="_blank" rel="noopener">pipeline dashboard</a>
+    <a href="https://noobstar2306.github.io/ai-devops-bot/" target="_blank" rel="noopener">dashboard</a>
     &nbsp;·&nbsp;
     <a href="https://noobstar2306.github.io/ai-devops-bot/hobbies.html" target="_blank" rel="noopener">hobbies</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/noobstar2306/ai-devops-bot/wiki" target="_blank" rel="noopener">wiki</a>
   </footer>
 
   </div><!-- /.page -->
